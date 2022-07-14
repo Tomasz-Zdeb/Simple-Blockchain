@@ -17,26 +17,32 @@ public class TransactionTest {
     }
 
     @Test
-    public void testGetSenderNotNullValues() {
+    public void testGetSenderNotNullValue() {
         transaction = new Transaction("A","B", 1);
         assertEquals("A",transaction.getSender());
     }
 
     @Test
-    public void testGetSenderNullValues() {
+    public void testGetSenderNullValue() {
         transaction = new Transaction(null,"B", 1);
         assertEquals(null,transaction.getSender());
     }
 
     @Test
-    public void testGetRecipientNotNullValues() {
+    public void testGetRecipientNotNullValue() {
         transaction = new Transaction("A","B", 1);
         assertEquals("B",transaction.getRecipient());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testConstructorNullRecipient() {
+    public void testConstructorNullRecipientException() {
         transaction = new Transaction("A",null, 1);
+        //https://stackoverflow.com/questions/1151237/junit-expected-tag-not-working-as-expected
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNoAmountConstructorNullRecipientException() {
+        transaction = new Transaction("A",null);
         //https://stackoverflow.com/questions/1151237/junit-expected-tag-not-working-as-expected
     }
 
