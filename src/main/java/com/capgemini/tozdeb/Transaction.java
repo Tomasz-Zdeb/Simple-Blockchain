@@ -19,7 +19,7 @@ class Transaction {
         return amount;
     }
 
-    private long timestamp;
+    private final long timestamp;
     private String sender;
     private String recipient;
     private int amount;
@@ -33,17 +33,14 @@ class Transaction {
             throw new IllegalArgumentException("recipient can't be null or empty");
         }
         this.recipient = recipient;
+        if(amount < 0)
+        {
+            throw new IllegalArgumentException("transaction amount can't be negative");
+        }
         this.amount = amount;
     }
     Transaction(String sender, String recipient)
     {
-        this.timestamp = Instant.now().getEpochSecond();
-        this.sender = sender;
-        if(recipient == null || recipient.length() == 0 || recipient.isEmpty())
-        {
-            throw new IllegalArgumentException("recipient can't be null or empty");
-        }
-        this.recipient = recipient;
-        this.amount = 0;
+        this(sender,recipient,0);
     }
 }
