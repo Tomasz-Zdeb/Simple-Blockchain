@@ -1,4 +1,4 @@
-package com.capgemini;
+package com.capgemini.tozdeb;
 
 public class Main {
     public static void main(String[] args) {

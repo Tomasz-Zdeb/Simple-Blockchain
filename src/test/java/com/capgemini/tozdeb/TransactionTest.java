@@ -1,4 +1,4 @@
-package com.capgemini;
+package com.capgemini.tozdeb;
 
 import org.junit.Test;
 import java.time.Instant;
