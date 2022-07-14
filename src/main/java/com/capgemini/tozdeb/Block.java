@@ -30,9 +30,15 @@ class Block {
         transactions = new Transaction[10];
     }
 
+    //TO IMPLEMENT
     public boolean AddTransaction(){
-        return true; //TO IMPLEMENT
+        return false;
     }
+    //TO IMPLEMENT
+    public boolean AddGenesisTransaction() {
+        return false;
+    }
+    //TO IMPLEMENT
     public void HashTransactions(){
 
     }
