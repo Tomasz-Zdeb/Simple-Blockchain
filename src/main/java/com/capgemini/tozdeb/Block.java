@@ -19,10 +19,11 @@ class Block {
         return transactions;
     }
 
-    private String previousBlockHash;
-    private long timestamp;
-    private String transactionsHash;
-    private Transaction[] transactions;
+    protected String previousBlockHash;
+    protected final long timestamp;
+    protected String transactionsHash;
+    protected byte numberOfTransactions = 0;
+    protected Transaction[] transactions;
 
     Block(String PreviousBlockHash){
         previousBlockHash = PreviousBlockHash;
@@ -35,10 +36,7 @@ class Block {
         return false;
     }
     //TO IMPLEMENT
-    public boolean AddGenesisTransaction() {
-        return false;
-    }
-    //TO IMPLEMENT
+
     public void HashTransactions(){
 
     }
