@@ -11,7 +11,6 @@ public class RegularTransactionTest {
     public void testGetTimestamp() {
         long timestamp = Instant.now().getEpochSecond();
         transaction = new RegularTransaction("A","B", 10);
-        transaction.getTimestamp();
         assertTrue(transaction.getTimestamp() >= timestamp);
         assertTrue(transaction.getTimestamp() < timestamp + 5);
     }

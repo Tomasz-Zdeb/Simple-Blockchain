@@ -11,7 +11,6 @@ public class GenesisTransactionTest {
     public void testGetTimestamp() {
         long timestamp = Instant.now().getEpochSecond();
         transaction = new GenesisTransaction(null,"B", 10);
-        transaction.getTimestamp();
         assertTrue(transaction.getTimestamp() >= timestamp);
         assertTrue(transaction.getTimestamp() < timestamp + 5);
     }
