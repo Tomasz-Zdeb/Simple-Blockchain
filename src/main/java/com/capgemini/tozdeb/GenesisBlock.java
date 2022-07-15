@@ -6,9 +6,8 @@ public class GenesisBlock extends Block{
 
     GenesisBlock(){
         super(null);
+        transactions[0] = new GenesisTransaction(null,"root_user",1000);
+        numberOfTransactions++;
+        HashTransactions();
     }
-    public boolean AddGenesisTransaction() {
-        return false;
-    }
-    //TO IMPLEMENT
 }
