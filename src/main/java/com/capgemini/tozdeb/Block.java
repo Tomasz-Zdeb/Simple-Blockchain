@@ -1,6 +1,7 @@
 package com.capgemini.tozdeb;
 
 import java.time.Instant;
+import org.apache.commons.codec.digest.DigestUtils;
 
 class Block {
     public String getPreviousBlockHash() {
@@ -19,6 +20,8 @@ class Block {
         return transactions;
     }
 
+    public byte getNumberOfTransactions() { return numberOfTransactions;}
+
     protected String previousBlockHash;
     protected final long timestamp;
     protected String transactionsHash;
@@ -31,14 +34,27 @@ class Block {
         transactions = new Transaction[10];
     }
 
-    //TO IMPLEMENT
-    public boolean AddTransaction(){
-        return false;
+    public boolean AddTransaction(Transaction transaction){
+
+        if(transaction == null)
+        {
+            throw new IllegalArgumentException("transaction to be added must be of non null value");
+        }
+        if(numberOfTransactions < transactions.length)
+        {
+            transactions[numberOfTransactions] = transaction;
+            numberOfTransactions++;
+            HashTransactions();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
-    //TO IMPLEMENT
 
-    public void HashTransactions(){
-
+    protected void HashTransactions(){
+        transactionsHash = String.valueOf(DigestUtils.sha256(String.valueOf(transactions)));
     }
 }
 
