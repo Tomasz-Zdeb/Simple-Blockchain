@@ -1,4 +1,4 @@
-package com.capgemini.tozdeb;
+package com.capgemini.tozdeb.simpleblockchain.core;
 
 import java.time.Instant;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -44,7 +44,7 @@ class Block {
         {
             transactions[numberOfTransactions] = transaction;
             numberOfTransactions++;
-            HashTransactions();
+            HashTransactions(transactions);
             return true;
         }
         else
@@ -53,8 +53,28 @@ class Block {
         }
     }
 
-    protected void HashTransactions(){
-        transactionsHash = String.valueOf(DigestUtils.sha256(String.valueOf(transactions)));
+    protected void HashTransactions(Transaction[] transactions){
+        StringBuilder builder = new StringBuilder();
+        for (Transaction transaction : transactions)
+        {
+            if(transaction != null)
+            {
+                builder.append(GenerateTransactionString(transaction));
+            }
+        }
+        transactionsHash = DigestUtils.sha256Hex(builder.toString());
+    }
+    protected String GenerateTransactionString(Transaction transaction)
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append(transaction.getTimestamp());
+        if(transaction.getSender() != null)
+        {
+            builder.append(transaction.getSender());
+        }
+        builder.append(transaction.getRecipient());
+        builder.append(transaction.getAmount());
+        return builder.toString();
     }
 }
 

@@ -1,4 +1,4 @@
-package com.capgemini.tozdeb;
+package com.capgemini.tozdeb.simpleblockchain.core;
 
 import org.junit.Test;
 import java.time.Instant;

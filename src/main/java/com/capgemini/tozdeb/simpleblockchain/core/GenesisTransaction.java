@@ -1,4 +1,4 @@
-package com.capgemini.tozdeb;
+package com.capgemini.tozdeb.simpleblockchain.core;
 
 public class GenesisTransaction extends Transaction{
     GenesisTransaction(String sender, String recipient, int amount){

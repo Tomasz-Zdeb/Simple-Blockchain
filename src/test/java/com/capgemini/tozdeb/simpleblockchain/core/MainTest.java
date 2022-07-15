@@ -1,8 +1,7 @@
-package com.capgemini.tozdeb;
+package com.capgemini.tozdeb.simpleblockchain.core;
 
-import org.junit.Assert;
 import org.junit.Test;
-import java.time.Instant;
+
 import static org.junit.Assert.*;
 
 public class MainTest {

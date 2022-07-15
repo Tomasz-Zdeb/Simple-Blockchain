@@ -1,4 +1,4 @@
-package com.capgemini.tozdeb;
+package com.capgemini.tozdeb.simpleblockchain.core;
 
 import org.junit.Test;
 import java.time.Instant;
@@ -65,6 +65,7 @@ public class TransactionTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetAmountNegativeValuePassedToConstructor(){
+
         transaction = new Transaction("A", "B", -1);
     }
 }
