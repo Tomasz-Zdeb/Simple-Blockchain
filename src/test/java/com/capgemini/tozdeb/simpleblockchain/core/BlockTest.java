@@ -10,7 +10,7 @@ public class BlockTest {
             mockValueA = 0,
             mockValueB=100,
             mockValueC = 10,
-            mockValueD= 8;;
+            mockValueD= 8;
     final String mockHash = "ABC-DEF-GHI",
     mockUserA = "userA",
     mockUserB = "userB",
