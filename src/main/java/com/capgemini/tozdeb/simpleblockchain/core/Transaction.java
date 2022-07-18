@@ -20,9 +20,9 @@ class Transaction {
     }
 
     private final long timestamp;
-    private String sender;
-    private String recipient;
-    private int amount;
+    private final String sender;
+    private final String recipient;
+    private final int amount;
 
     Transaction(String sender, String recipient, int amount)
     {
