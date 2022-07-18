@@ -28,7 +28,7 @@ class Transaction {
     {
         this.timestamp = Instant.now().getEpochSecond();
         this.sender = sender;
-        if(recipient == null || recipient.length() == 0 || recipient.isEmpty())
+        if(recipient == null || recipient.isEmpty())
         {
             throw new IllegalArgumentException("recipient can't be null or empty");
         }
