@@ -35,7 +35,7 @@ class Block {
         transactions = new Transaction[BLOCK_SIZE];
     }
 
-    public boolean AddTransaction(Transaction transaction){
+    public boolean addTransaction(Transaction transaction){
 
         if(transaction == null)
         {
@@ -45,7 +45,7 @@ class Block {
         {
             transactions[numberOfTransactions] = transaction;
             numberOfTransactions++;
-            HashTransactions(transactions);
+            hashTransactions(transactions);
             return true;
         }
         else
@@ -54,18 +54,18 @@ class Block {
         }
     }
 
-    protected void HashTransactions(Transaction[] transactions){
+    protected void hashTransactions(Transaction[] transactions){
         StringBuilder builder = new StringBuilder();
         for (Transaction transaction : transactions)
         {
             if(transaction != null)
             {
-                builder.append(GenerateTransactionString(transaction));
+                builder.append(generateTransactionString(transaction));
             }
         }
         transactionsHash = DigestUtils.sha256Hex(builder.toString());
     }
-    protected String GenerateTransactionString(Transaction transaction)
+    protected String generateTransactionString(Transaction transaction)
     {
         StringBuilder builder = new StringBuilder();
         builder.append(transaction.getTimestamp());

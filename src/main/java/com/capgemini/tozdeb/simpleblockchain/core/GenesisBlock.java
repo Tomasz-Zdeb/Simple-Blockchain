@@ -6,6 +6,6 @@ public class GenesisBlock extends Block{
         super(null);
         transactions[0] = new GenesisTransaction(null,recipient,amount);
         numberOfTransactions++;
-        HashTransactions(transactions);
+        hashTransactions(transactions);
     }
 }

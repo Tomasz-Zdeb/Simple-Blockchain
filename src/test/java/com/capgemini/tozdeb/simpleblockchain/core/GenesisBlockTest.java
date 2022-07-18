@@ -1,6 +1,5 @@
 package com.capgemini.tozdeb.simpleblockchain.core;
 
-import org.junit.Assert;
 import org.junit.Test;
 import java.time.Instant;
 import static org.junit.Assert.*;
@@ -9,7 +8,7 @@ import static org.junit.Assert.*;
 public class GenesisBlockTest {
     Block block;
     @Test
-    public void GenesisBlockCreationDoesNotThrow() {
+    public void testGenesisBlockCreationDoesNotThrow() {
         try{
             block = new GenesisBlock("root_user",1000);
         }
@@ -20,7 +19,7 @@ public class GenesisBlockTest {
     }
 
     @Test
-    public void BlockGetTimestampIsValid() {
+    public void testBlockGetTimestampIsValid() {
         long timestamp = Instant.now().getEpochSecond();
         block = new GenesisBlock("root_user",1000);
         assertTrue(block.getTimestamp() >= timestamp);
@@ -28,27 +27,27 @@ public class GenesisBlockTest {
     }
 
     @Test
-    public void NewGenesisBlockNumberOfTransactionsIsOne() {
+    public void testNewGenesisBlockNumberOfTransactionsIsOne() {
         block = new GenesisBlock("root_user",1000);
         assertEquals(1,block.getNumberOfTransactions());
     }
 
 
     @Test
-    public void IsTransactionHashValid() {
+    public void testIsTransactionHashValid() {
         block = new GenesisBlock("root_user",1000);
         assertEquals(64,block.getTransactionsHash().length());
     }
 
     @Test
-    public void PreviousTransactionHashIsNull() {
+    public void testPreviousTransactionHashIsNull() {
         block = new GenesisBlock("root_user",1000);
         assertEquals(null,block.getPreviousBlockHash());
     }
 
 
     @Test
-    public void NewBlocksTransactionListContainsOneGenesisTransaction() {
+    public void testNewBlocksTransactionListContainsOneGenesisTransaction() {
         block = new GenesisBlock("root_user",1000);
         assertFalse(block.transactions[0].getRecipient() == null);
         assertTrue(block.transactions[0].getSender() == null);
@@ -58,9 +57,9 @@ public class GenesisBlockTest {
     }
 
     @Test
-    public void TransactionIsAddedProperly(){
+    public void testTransactionIsAddedProperly(){
         block = new GenesisBlock("root_user",1000);
-        assertTrue(block.AddTransaction(new RegularTransaction("userA","userB",50)));
+        assertTrue(block.addTransaction(new RegularTransaction("userA","userB",50)));
         Transaction[] transactions = block.getTransactions();
 
         assertTrue(transactions[0].getSender() == null);
@@ -78,35 +77,35 @@ public class GenesisBlockTest {
     }
 
     @Test
-    public void AddingThreeTransactionsResultInCounterIncrement(){
+    public void testAddingThreeTransactionsResultInCounterIncrement(){
         block = new GenesisBlock("root_user",1000);
-        block.AddTransaction(new RegularTransaction("userA", "userB",100));
-        block.AddTransaction(new RegularTransaction("userB", "userC",50));
-        block.AddTransaction(new RegularTransaction("userA", "userD",25));
+        block.addTransaction(new RegularTransaction("userA", "userB",100));
+        block.addTransaction(new RegularTransaction("userB", "userC",50));
+        block.addTransaction(new RegularTransaction("userA", "userD",25));
         assertEquals(4,block.getNumberOfTransactions());
     }
     @Test
-    public void AddingOneTransactionsResultInCounterIncrement() {
+    public void testAddingOneTransactionsResultInCounterIncrement() {
         block = new GenesisBlock("root_user",1000);
-        block.AddTransaction(new RegularTransaction("userA", "userB", 100));
+        block.addTransaction(new RegularTransaction("userA", "userB", 100));
         assertEquals(2,block.getNumberOfTransactions());
     }
 
     @Test
-    public void AddingATransactionToFullBlockReturnsFalse()
+    public void testAddingATransactionToFullBlockReturnsFalse()
     {
         block = new GenesisBlock("root_user",1000);
         for (int i=0;i<block.transactions.length-1;i++)
         {
-            block.AddTransaction(new RegularTransaction("userA", "userB", 100));
+            block.addTransaction(new RegularTransaction("userA", "userB", 100));
         }
-        assertFalse(block.AddTransaction(new RegularTransaction("userA", "userB", 100)));
+        assertFalse(block.addTransaction(new RegularTransaction("userA", "userB", 100)));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void AddingNullTransactionThrows()
+    public void testAddingNullTransactionThrows()
     {
         block = new GenesisBlock("root_user",1000);
-        block.AddTransaction(null);
+        block.addTransaction(null);
     }
 }

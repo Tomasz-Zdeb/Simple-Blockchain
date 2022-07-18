@@ -8,7 +8,7 @@ public class RegularBlock extends Block{
         {
             throw new IllegalArgumentException("previous block hash can't be null");
         }
-        AddTransaction(transaction);
+        addTransaction(transaction);
     }
 
 }

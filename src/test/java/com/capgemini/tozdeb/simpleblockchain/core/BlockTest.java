@@ -7,7 +7,7 @@ import java.time.Instant;
 public class BlockTest {
     Block block;
     @Test
-    public void BlockCreationWithHashProvidedDoesNotThrow() {
+    public void testBlockCreationWithHashProvidedDoesNotThrow() {
         try{
             block = new Block("ABC-DEF-GHIJK-LM");
         }
@@ -18,7 +18,7 @@ public class BlockTest {
     }
 
     @Test
-    public void BlockCreationWithNullPreviousBlockHashProvidedDoesNotThrow() {
+    public void testBlockCreationWithNullPreviousBlockHashProvidedDoesNotThrow() {
         try{
             block = new Block(null);
         }
@@ -28,7 +28,7 @@ public class BlockTest {
     }
 
     @Test
-    public void BlockGetTimestampWithPreviousBlockHash() {
+    public void testBlockGetTimestampWithPreviousBlockHash() {
         long timestamp = Instant.now().getEpochSecond();
         block = new Block("ABC-DEF-GHIJK-LM");
         assertTrue(block.getTimestamp() >= timestamp);
@@ -36,7 +36,7 @@ public class BlockTest {
     }
 
     @Test
-    public void BlockGetTimestampWithNullPreviousBlockHash() {
+    public void testBlockGetTimestampWithNullPreviousBlockHash() {
         long timestamp = Instant.now().getEpochSecond();
         block = new Block(null);
         assertTrue(block.getTimestamp() >= timestamp);
@@ -44,43 +44,43 @@ public class BlockTest {
     }
 
     @Test
-    public void NewBlockNumberOfTransactionsIsZeroWithPreviousBlockHash() {
+    public void testNewBlockNumberOfTransactionsIsZeroWithPreviousBlockHash() {
         block = new Block("ABC-DEF-GHIJK-LM");
         assertEquals(0,block.getNumberOfTransactions());
     }
 
     @Test
-    public void NewBlockNumberOfTransactionsIsZeroWithNullBlockHash() {
+    public void testNewBlockNumberOfTransactionsIsZeroWithNullBlockHash() {
         block = new Block(null);
         assertEquals(0,block.getNumberOfTransactions());
     }
 
     @Test
-    public void NewBlockTransactionHashIsNullWithBlockHash() {
+    public void testNewBlockTransactionHashIsNullWithBlockHash() {
         block = new Block("ABC-DEF-GHIJK-LM");
         assertEquals(null,block.getTransactionsHash());
     }
 
     @Test
-    public void NewBlockTransactionHashIsNullWithNullBlockHash() {
+    public void testNewBlockTransactionHashIsNullWithNullBlockHash() {
         block = new Block(null);
         assertEquals(null,block.getTransactionsHash());
     }
 
     @Test
-    public void PreviousBlockHashIsNullWithBlockHash() {
+    public void testPreviousBlockHashIsNullWithBlockHash() {
         block = new Block("ABC-DEF-GHIJK-LM");
         assertEquals("ABC-DEF-GHIJK-LM",block.getPreviousBlockHash());
     }
 
     @Test
-    public void PreviousBlockHashIsNullWithNullBlockHash() {
+    public void testPreviousBlockHashIsNullWithNullBlockHash() {
         block = new Block(null);
         assertEquals(null,block.getPreviousBlockHash());
     }
 
     @Test
-    public void NewBlocksTransactionListIsNullWithBlockHash() {
+    public void testNewBlocksTransactionListIsNullWithBlockHash() {
         block = new Block("ABC-DEF-GHIJK-LM");
         for (Transaction transaction : block.transactions)
         {
@@ -89,7 +89,7 @@ public class BlockTest {
     }
 
     @Test
-    public void NewBlocksTransactionListIsNullWithNullBlockHash() {
+    public void testNewBlocksTransactionListIsNullWithNullBlockHash() {
         block = new Block(null);
         for (Transaction transaction : block.transactions)
         {
@@ -98,9 +98,9 @@ public class BlockTest {
     }
 
     @Test
-    public void TransactionIsAddedProperlyWithPreviousBlockHash(){
+    public void testTransactionIsAddedProperlyWithPreviousBlockHash(){
         block = new Block("ABC-DEF-GHIJK-LM");
-        block.AddTransaction(new RegularTransaction("userA","user",0));
+        block.addTransaction(new RegularTransaction("userA","user",0));
         Transaction[] transactions = block.getTransactions();
 
         assertTrue(transactions[0].getSender() == "userA");
@@ -114,9 +114,9 @@ public class BlockTest {
     }
 
     @Test
-    public void TransactionIsAddedProperlyWithNullPreviousBlockHash(){
+    public void testTransactionIsAddedProperlyWithNullPreviousBlockHash(){
         block = new Block(null);
-        block.AddTransaction(new RegularTransaction("userA","user",0));
+        block.addTransaction(new RegularTransaction("userA","user",0));
         Transaction[] transactions = block.getTransactions();
 
         assertTrue(transactions[0].getSender() == "userA");
@@ -130,42 +130,42 @@ public class BlockTest {
     }
 
     @Test
-    public void AddingThreeTransactionsResultInCounterIncrement(){
+    public void testAddingThreeTransactionsResultInCounterIncrement(){
         block = new Block("ABC-DEF-GHIJK-LM");
-        block.AddTransaction(new RegularTransaction("userA", "userB",100));
-        block.AddTransaction(new RegularTransaction("userB", "userC",50));
-        block.AddTransaction(new RegularTransaction("userA", "userD",25));
+        block.addTransaction(new RegularTransaction("userA", "userB",100));
+        block.addTransaction(new RegularTransaction("userB", "userC",50));
+        block.addTransaction(new RegularTransaction("userA", "userD",25));
         assertEquals(3,block.getNumberOfTransactions());
     }
     @Test
-    public void AddingOneTransactionsResultInCounterIncrement() {
+    public void testAddingOneTransactionsResultInCounterIncrement() {
         block = new Block("ABC-DEF-GHIJK-LM");
-        block.AddTransaction(new RegularTransaction("userA", "userB", 100));
+        block.addTransaction(new RegularTransaction("userA", "userB", 100));
         assertEquals(1,block.getNumberOfTransactions());
     }
 
     @Test
-    public void AddingATransactionToFullBlockReturnsFalse()
+    public void testAddingATransactionToFullBlockReturnsFalse()
     {
         block = new Block("ABC-DEF-GHIJK-LM");
         for (int i=0;i<block.transactions.length;i++)
         {
-            block.AddTransaction(new RegularTransaction("userA", "userB", 100));
+            block.addTransaction(new RegularTransaction("userA", "userB", 100));
         }
-        assertFalse(block.AddTransaction(new RegularTransaction("userA", "userB", 100)));
+        assertFalse(block.addTransaction(new RegularTransaction("userA", "userB", 100)));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void AddingNullTransactionThrows()
+    public void testAddingNullTransactionThrows()
     {
         block = new Block("ABC-DEF-GHIJK-LM");
-        block.AddTransaction(null);
+        block.addTransaction(null);
     }
 
     @Test
-    public void IsTransactionsHashValid() {
+    public void testIsTransactionsHashValid() {
         block = new Block("ABC-DEF-GHIJK-LM");
-        block.AddTransaction(new RegularTransaction("userA", "userB", 100));
+        block.addTransaction(new RegularTransaction("userA", "userB", 100));
         assertEquals(64,block.getTransactionsHash().length());
     }
 }
