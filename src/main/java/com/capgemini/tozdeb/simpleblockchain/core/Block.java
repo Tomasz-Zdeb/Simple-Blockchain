@@ -4,6 +4,7 @@ import java.time.Instant;
 import org.apache.commons.codec.digest.DigestUtils;
 
 class Block {
+    final int BLOCK_SIZE = 10;
     public String getPreviousBlockHash() {
         return previousBlockHash;
     }
@@ -31,7 +32,7 @@ class Block {
     Block(String PreviousBlockHash){
         previousBlockHash = PreviousBlockHash;
         timestamp = Instant.now().getEpochSecond();
-        transactions = new Transaction[10];
+        transactions = new Transaction[BLOCK_SIZE];
     }
 
     public boolean AddTransaction(Transaction transaction){
