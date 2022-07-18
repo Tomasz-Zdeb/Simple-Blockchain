@@ -5,11 +5,22 @@ import org.junit.Test;
 import java.time.Instant;
 
 public class BlockTest {
+    final int sha256HashLength = 64,
+            maxTimestampTimeout = 5,
+            mockValueA = 0,
+            mockValueB=100,
+            mockValueC = 10,
+            mockValueD= 8;;
+    final String mockHash = "ABC-DEF-GHI",
+    mockUserA = "userA",
+    mockUserB = "userB",
+    mockUserC = "userC",
+    mockUserD = "userD";
     Block block;
     @Test
     public void testBlockCreationWithHashProvidedDoesNotThrow() {
         try{
-            block = new Block("ABC-DEF-GHI");
+            block = new Block(mockHash);
         }
         catch(Exception e)
         {
@@ -30,9 +41,9 @@ public class BlockTest {
     @Test
     public void testBlockGetTimestampWithPreviousBlockHash() {
         long timestamp = Instant.now().getEpochSecond();
-        block = new Block("ABC-DEF-GHI");
+        block = new Block(mockHash);
         assertTrue(block.getTimestamp() >= timestamp);
-        assertTrue(block.getTimestamp() < timestamp + 5);
+        assertTrue(block.getTimestamp() < timestamp + maxTimestampTimeout);
     }
 
     @Test
@@ -40,24 +51,28 @@ public class BlockTest {
         long timestamp = Instant.now().getEpochSecond();
         block = new Block(null);
         assertTrue(block.getTimestamp() >= timestamp);
-        assertTrue(block.getTimestamp() < timestamp + 5);
+        assertTrue(block.getTimestamp() < timestamp + maxTimestampTimeout);
     }
 
     @Test
     public void testNewBlockNumberOfTransactionsIsZeroWithPreviousBlockHash() {
-        block = new Block("ABC-DEF-GHI");
-        assertEquals(0,block.getNumberOfTransactions());
+        final int expectedNumberOfTransactions = 0;
+
+        block = new Block(mockHash);
+        assertEquals(expectedNumberOfTransactions,block.getNumberOfTransactions());
     }
 
     @Test
     public void testNewBlockNumberOfTransactionsIsZeroWithNullBlockHash() {
+        final int expectedNumberOfTransactions = 0;
+
         block = new Block(null);
-        assertEquals(0,block.getNumberOfTransactions());
+        assertEquals(expectedNumberOfTransactions,block.getNumberOfTransactions());
     }
 
     @Test
     public void testNewBlockTransactionHashIsNullWithBlockHash() {
-        block = new Block("ABC-DEF-GHI");
+        block = new Block(mockHash);
         assertNull(block.getTransactionsHash());
     }
 
@@ -69,8 +84,8 @@ public class BlockTest {
 
     @Test
     public void testPreviousBlockHashIsNullWithBlockHash() {
-        block = new Block("ABC-DEF-GHI");
-        assertEquals("ABC-DEF-GHI",block.getPreviousBlockHash());
+        block = new Block(mockHash);
+        assertEquals(mockHash,block.getPreviousBlockHash());
     }
 
     @Test
@@ -81,7 +96,7 @@ public class BlockTest {
 
     @Test
     public void testNewBlocksTransactionListIsNullWithBlockHash() {
-        block = new Block("ABC-DEF-GHI");
+        block = new Block(mockHash);
         for (Transaction transaction : block.transactions)
         {
             assertNull(transaction);
@@ -99,13 +114,13 @@ public class BlockTest {
 
     @Test
     public void testTransactionIsAddedProperlyWithPreviousBlockHash(){
-        block = new Block("ABC-DEF-GHI");
-        block.addTransaction(new RegularTransaction("userA","user",0));
+        block = new Block(mockHash);
+        block.addTransaction(new RegularTransaction(mockUserA,mockUserB,mockValueA));
         Transaction[] transactions = block.getTransactions();
 
-        assertEquals("userA", transactions[0].getSender());
-        assertEquals("user", transactions[0].getRecipient());
-        assertEquals(0, transactions[0].getAmount());
+        assertEquals(mockUserA, transactions[0].getSender());
+        assertEquals(mockUserB, transactions[0].getRecipient());
+        assertEquals(mockValueA, transactions[0].getAmount());
 
         for(int i = 1; i<transactions.length;i++)
         {
@@ -116,12 +131,12 @@ public class BlockTest {
     @Test
     public void testTransactionIsAddedProperlyWithNullPreviousBlockHash(){
         block = new Block(null);
-        block.addTransaction(new RegularTransaction("userA","user",0));
+        block.addTransaction(new RegularTransaction(mockUserA,mockUserB,mockValueA));
         Transaction[] transactions = block.getTransactions();
 
-        assertEquals("userA", transactions[0].getSender());
-        assertEquals("user", transactions[0].getRecipient());
-        assertEquals(0, transactions[0].getAmount());
+        assertEquals(mockUserA, transactions[0].getSender());
+        assertEquals(mockUserB, transactions[0].getRecipient());
+        assertEquals(mockValueA, transactions[0].getAmount());
 
         for(int i = 1; i<transactions.length;i++)
         {
@@ -131,41 +146,49 @@ public class BlockTest {
 
     @Test
     public void testAddingThreeTransactionsResultInCounterIncrement(){
-        block = new Block("ABC-DEF-GHI");
-        block.addTransaction(new RegularTransaction("userA", "userB",100));
-        block.addTransaction(new RegularTransaction("userB", "userC",50));
-        block.addTransaction(new RegularTransaction("userA", "userD",25));
-        assertEquals(3,block.getNumberOfTransactions());
+        block = new Block(mockHash);
+
+        final int expectedNumberOfTransactions = 3;
+
+        block.addTransaction(new RegularTransaction(mockUserA, mockUserB,mockValueB));
+        block.addTransaction(new RegularTransaction(mockUserB, mockUserC,mockValueC));
+        block.addTransaction(new RegularTransaction(mockUserA, mockUserD,mockValueD));
+        assertEquals(expectedNumberOfTransactions,block.getNumberOfTransactions());
     }
     @Test
     public void testAddingOneTransactionsResultInCounterIncrement() {
-        block = new Block("ABC-DEF-GHI");
-        block.addTransaction(new RegularTransaction("userA", "userB", 100));
-        assertEquals(1,block.getNumberOfTransactions());
+        block = new Block(mockHash);
+
+        final int expectedNumberOfTransactions = 1;
+
+        block.addTransaction(new RegularTransaction(mockUserA, mockUserB, mockValueB));
+        assertEquals(expectedNumberOfTransactions,block.getNumberOfTransactions());
     }
 
     @Test
     public void testAddingATransactionToFullBlockReturnsFalse()
     {
-        block = new Block("ABC-DEF-GHI");
+        block = new Block(mockHash);
+
         for (int i=0;i<block.transactions.length;i++)
         {
-            block.addTransaction(new RegularTransaction("userA", "userB", 100));
+            block.addTransaction(new RegularTransaction(mockUserA, mockUserB, mockValueB));
         }
-        assertFalse(block.addTransaction(new RegularTransaction("userA", "userB", 100)));
+        assertFalse(block.addTransaction(new RegularTransaction(mockUserA, mockUserB, mockValueB)));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddingNullTransactionThrows()
     {
-        block = new Block("ABC-DEF-GHI");
+        block = new Block(mockHash);
         block.addTransaction(null);
     }
 
     @Test
     public void testIsTransactionsHashValid() {
-        block = new Block("ABC-DEF-GHI");
-        block.addTransaction(new RegularTransaction("userA", "userB", 100));
-        assertEquals(64,block.getTransactionsHash().length());
+        block = new Block(mockHash);
+
+        block.addTransaction(new RegularTransaction(mockUserA, mockUserB, mockValueB));
+        assertEquals(sha256HashLength,block.getTransactionsHash().length());
     }
 }

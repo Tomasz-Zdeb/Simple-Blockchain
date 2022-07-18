@@ -6,11 +6,22 @@ import static org.junit.Assert.*;
 
 
 public class GenesisBlockTest {
+    final int sha256HashLength = 64,
+            maxTimestampTimeout = 5,
+            mockValueA = 1000,
+            mockValueB = 100,
+            mockValueC = 10,
+            mockValueD = 8;
+    final String mockInitialUser = "root",
+    mockUserA = "userA",
+    mockUserB = "userB",
+    mockUserC = "userC",
+    mockUserD = "userD";
     Block block;
     @Test
     public void testGenesisBlockCreationDoesNotThrow() {
         try{
-            block = new GenesisBlock("root_user",1000);
+            block = new GenesisBlock(mockInitialUser,mockValueA);
         }
         catch(Exception e)
         {
@@ -21,34 +32,35 @@ public class GenesisBlockTest {
     @Test
     public void testBlockGetTimestampIsValid() {
         long timestamp = Instant.now().getEpochSecond();
-        block = new GenesisBlock("root_user",1000);
+        block = new GenesisBlock(mockInitialUser,mockValueA);
         assertTrue(block.getTimestamp() >= timestamp);
-        assertTrue(block.getTimestamp() < timestamp + 5);
+        assertTrue(block.getTimestamp() < timestamp + maxTimestampTimeout);
     }
 
     @Test
     public void testNewGenesisBlockNumberOfTransactionsIsOne() {
-        block = new GenesisBlock("root_user",1000);
-        assertEquals(1,block.getNumberOfTransactions());
+        final int expectedNumberOfTransactions = 1;
+        block = new GenesisBlock(mockInitialUser,mockValueA);
+        assertEquals(expectedNumberOfTransactions,block.getNumberOfTransactions());
     }
 
 
     @Test
     public void testIsTransactionHashValid() {
-        block = new GenesisBlock("root_user",1000);
-        assertEquals(64,block.getTransactionsHash().length());
+        block = new GenesisBlock(mockInitialUser,mockValueA);
+        assertEquals(sha256HashLength,block.getTransactionsHash().length());
     }
 
     @Test
     public void testPreviousTransactionHashIsNull() {
-        block = new GenesisBlock("root_user",1000);
+        block = new GenesisBlock(mockInitialUser,mockValueA);
         assertNull(block.getPreviousBlockHash());
     }
 
 
     @Test
     public void testNewBlocksTransactionListContainsOneGenesisTransaction() {
-        block = new GenesisBlock("root_user",1000);
+        block = new GenesisBlock(mockInitialUser,mockValueA);
         assertNotNull(block.transactions[0].getRecipient());
         assertNull(block.transactions[0].getSender());
         for(int i = 1;i<block.transactions.length;i++){
@@ -58,17 +70,17 @@ public class GenesisBlockTest {
 
     @Test
     public void testTransactionIsAddedProperly(){
-        block = new GenesisBlock("root_user",1000);
-        assertTrue(block.addTransaction(new RegularTransaction("userA","userB",50)));
+        block = new GenesisBlock(mockInitialUser,mockValueA);
+        assertTrue(block.addTransaction(new RegularTransaction(mockUserA,mockUserB,mockValueB)));
         Transaction[] transactions = block.getTransactions();
 
         assertNull(transactions[0].getSender());
-        assertSame("root_user", transactions[0].getRecipient());
-        assertEquals(1000, transactions[0].getAmount());
+        assertSame(mockInitialUser, transactions[0].getRecipient());
+        assertEquals(mockValueA, transactions[0].getAmount());
 
-        assertSame("userA", transactions[1].getSender());
-        assertSame("userB", transactions[1].getRecipient());
-        assertEquals(50, transactions[1].getAmount());
+        assertSame(mockUserA, transactions[1].getSender());
+        assertSame(mockUserB, transactions[1].getRecipient());
+        assertEquals(mockValueB, transactions[1].getAmount());
 
         for(int i = 2; i<transactions.length;i++)
         {
@@ -78,34 +90,38 @@ public class GenesisBlockTest {
 
     @Test
     public void testAddingThreeTransactionsResultInCounterIncrement(){
-        block = new GenesisBlock("root_user",1000);
-        block.addTransaction(new RegularTransaction("userA", "userB",100));
-        block.addTransaction(new RegularTransaction("userB", "userC",50));
-        block.addTransaction(new RegularTransaction("userA", "userD",25));
-        assertEquals(4,block.getNumberOfTransactions());
+        final int expectedNumberOfTransactions = 4;
+
+        block = new GenesisBlock(mockInitialUser,mockValueA);
+        block.addTransaction(new RegularTransaction(mockUserA, mockUserB,mockValueB));
+        block.addTransaction(new RegularTransaction(mockUserB, mockUserC,mockValueC));
+        block.addTransaction(new RegularTransaction(mockUserA, mockUserD,mockValueD));
+        assertEquals(expectedNumberOfTransactions,block.getNumberOfTransactions());
     }
     @Test
     public void testAddingOneTransactionsResultInCounterIncrement() {
-        block = new GenesisBlock("root_user",1000);
-        block.addTransaction(new RegularTransaction("userA", "userB", 100));
-        assertEquals(2,block.getNumberOfTransactions());
+        final int expectedNumberOfTransactions = 2;
+
+        block = new GenesisBlock(mockInitialUser,mockValueA);
+        block.addTransaction(new RegularTransaction(mockUserA, mockUserB, mockValueB));
+        assertEquals(expectedNumberOfTransactions,block.getNumberOfTransactions());
     }
 
     @Test
     public void testAddingATransactionToFullBlockReturnsFalse()
     {
-        block = new GenesisBlock("root_user",1000);
+        block = new GenesisBlock(mockInitialUser,mockValueA);
         for (int i=0;i<block.transactions.length-1;i++)
         {
-            block.addTransaction(new RegularTransaction("userA", "userB", 100));
+            block.addTransaction(new RegularTransaction(mockUserA, mockUserB, mockValueB));
         }
-        assertFalse(block.addTransaction(new RegularTransaction("userA", "userB", 100)));
+        assertFalse(block.addTransaction(new RegularTransaction(mockUserA, mockUserB, mockValueB)));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddingNullTransactionThrows()
     {
-        block = new GenesisBlock("root_user",1000);
+        block = new GenesisBlock(mockInitialUser,mockValueA);
         block.addTransaction(null);
     }
 }
