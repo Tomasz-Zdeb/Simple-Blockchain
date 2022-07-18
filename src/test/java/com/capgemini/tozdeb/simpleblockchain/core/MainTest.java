@@ -9,7 +9,6 @@ public class MainTest {
     public void testNoExceptionPass() {
         boolean result = true;
         try{
-            new Main();
             Main.main(null);
         }
         catch(Exception e)
