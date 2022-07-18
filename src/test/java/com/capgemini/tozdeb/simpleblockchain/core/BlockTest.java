@@ -13,7 +13,7 @@ public class BlockTest {
         }
         catch(Exception e)
         {
-            assertTrue(false);
+            fail();
         }
     }
 
@@ -23,7 +23,7 @@ public class BlockTest {
             block = new Block(null);
         }
         catch(Exception e) {
-            assertTrue(false);
+            fail();
         }
     }
 
@@ -58,13 +58,13 @@ public class BlockTest {
     @Test
     public void testNewBlockTransactionHashIsNullWithBlockHash() {
         block = new Block("ABC-DEF-GHIJK-LM");
-        assertEquals(null,block.getTransactionsHash());
+        assertNull(block.getTransactionsHash());
     }
 
     @Test
     public void testNewBlockTransactionHashIsNullWithNullBlockHash() {
         block = new Block(null);
-        assertEquals(null,block.getTransactionsHash());
+        assertNull(block.getTransactionsHash());
     }
 
     @Test
@@ -76,7 +76,7 @@ public class BlockTest {
     @Test
     public void testPreviousBlockHashIsNullWithNullBlockHash() {
         block = new Block(null);
-        assertEquals(null,block.getPreviousBlockHash());
+        assertNull(block.getPreviousBlockHash());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class BlockTest {
         block = new Block("ABC-DEF-GHIJK-LM");
         for (Transaction transaction : block.transactions)
         {
-            assertEquals(null,transaction);
+            assertNull(transaction);
         }
     }
 
@@ -93,7 +93,7 @@ public class BlockTest {
         block = new Block(null);
         for (Transaction transaction : block.transactions)
         {
-            assertEquals(null,transaction);
+            assertNull(transaction);
         }
     }
 
@@ -103,13 +103,13 @@ public class BlockTest {
         block.addTransaction(new RegularTransaction("userA","user",0));
         Transaction[] transactions = block.getTransactions();
 
-        assertTrue(transactions[0].getSender().equals("userA"));
-        assertTrue(transactions[0].getRecipient().equals("user"));
-        assertTrue(transactions[0].getAmount()==0);
+        assertEquals("userA", transactions[0].getSender());
+        assertEquals("user", transactions[0].getRecipient());
+        assertEquals(0, transactions[0].getAmount());
 
         for(int i = 1; i<transactions.length;i++)
         {
-            assertTrue(transactions[i] == null);
+            assertNull(transactions[i]);
         }
     }
 
@@ -119,13 +119,13 @@ public class BlockTest {
         block.addTransaction(new RegularTransaction("userA","user",0));
         Transaction[] transactions = block.getTransactions();
 
-        assertTrue(transactions[0].getSender().equals("userA"));
-        assertTrue(transactions[0].getRecipient().equals("user"));
-        assertTrue(transactions[0].getAmount()==0);
+        assertEquals("userA", transactions[0].getSender());
+        assertEquals("user", transactions[0].getRecipient());
+        assertEquals(0, transactions[0].getAmount());
 
         for(int i = 1; i<transactions.length;i++)
         {
-            assertTrue(transactions[i] == null);
+            assertNull(transactions[i]);
         }
     }
 

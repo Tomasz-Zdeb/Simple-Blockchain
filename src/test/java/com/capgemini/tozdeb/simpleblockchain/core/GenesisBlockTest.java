@@ -14,7 +14,7 @@ public class GenesisBlockTest {
         }
         catch(Exception e)
         {
-            assertTrue(false);
+            fail();
         }
     }
 
@@ -42,17 +42,17 @@ public class GenesisBlockTest {
     @Test
     public void testPreviousTransactionHashIsNull() {
         block = new GenesisBlock("root_user",1000);
-        assertEquals(null,block.getPreviousBlockHash());
+        assertNull(block.getPreviousBlockHash());
     }
 
 
     @Test
     public void testNewBlocksTransactionListContainsOneGenesisTransaction() {
         block = new GenesisBlock("root_user",1000);
-        assertFalse(block.transactions[0].getRecipient() == null);
-        assertTrue(block.transactions[0].getSender() == null);
+        assertNotNull(block.transactions[0].getRecipient());
+        assertNull(block.transactions[0].getSender());
         for(int i = 1;i<block.transactions.length;i++){
-            assertTrue(block.transactions[i] == null);
+            assertNull(block.transactions[i]);
         }
     }
 
@@ -62,17 +62,17 @@ public class GenesisBlockTest {
         assertTrue(block.addTransaction(new RegularTransaction("userA","userB",50)));
         Transaction[] transactions = block.getTransactions();
 
-        assertTrue(transactions[0].getSender() == null);
-        assertTrue(transactions[0].getRecipient() == "root_user");
-        assertTrue(transactions[0].getAmount()==1000);
+        assertNull(transactions[0].getSender());
+        assertSame("root_user", transactions[0].getRecipient());
+        assertEquals(1000, transactions[0].getAmount());
 
-        assertTrue(transactions[1].getSender() == "userA");
-        assertTrue(transactions[1].getRecipient() == "userB");
-        assertTrue(transactions[1].getAmount()==50);
+        assertSame("userA", transactions[1].getSender());
+        assertSame("userB", transactions[1].getRecipient());
+        assertEquals(50, transactions[1].getAmount());
 
         for(int i = 2; i<transactions.length;i++)
         {
-            assertTrue(transactions[i] == null);
+            assertNull(transactions[i]);
         }
     }
 

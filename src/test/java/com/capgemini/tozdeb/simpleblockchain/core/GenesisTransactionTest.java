@@ -24,7 +24,7 @@ public class GenesisTransactionTest {
     @Test
     public void testGetSenderNullValue() {
         transaction = new GenesisTransaction(null,"B", 1);
-        assertEquals(null,transaction.getSender());
+        assertNull(transaction.getSender());
     }
 
     @Test

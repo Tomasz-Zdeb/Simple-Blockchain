@@ -24,7 +24,7 @@ public class TransactionTest {
     @Test
     public void testGetSenderNullValue() {
         transaction = new Transaction(null,"B", 1);
-        assertEquals(null,transaction.getSender());
+        assertNull(transaction.getSender());
     }
 
     @Test
