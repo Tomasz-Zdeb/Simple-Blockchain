@@ -103,8 +103,8 @@ public class BlockTest {
         block.addTransaction(new RegularTransaction("userA","user",0));
         Transaction[] transactions = block.getTransactions();
 
-        assertTrue(transactions[0].getSender() == "userA");
-        assertTrue(transactions[0].getRecipient() == "user");
+        assertTrue(transactions[0].getSender().equals("userA"));
+        assertTrue(transactions[0].getRecipient().equals("user"));
         assertTrue(transactions[0].getAmount()==0);
 
         for(int i = 1; i<transactions.length;i++)
@@ -119,8 +119,8 @@ public class BlockTest {
         block.addTransaction(new RegularTransaction("userA","user",0));
         Transaction[] transactions = block.getTransactions();
 
-        assertTrue(transactions[0].getSender() == "userA");
-        assertTrue(transactions[0].getRecipient() == "user");
+        assertTrue(transactions[0].getSender().equals("userA"));
+        assertTrue(transactions[0].getRecipient().equals("user"));
         assertTrue(transactions[0].getAmount()==0);
 
         for(int i = 1; i<transactions.length;i++)
