@@ -29,10 +29,25 @@ class Block {
     protected byte numberOfTransactions = 0;
     protected Transaction[] transactions;
 
-    Block(String PreviousBlockHash){
-        previousBlockHash = PreviousBlockHash;
+    Block(String previousBlockHash,String sender, String recipient, int amount) {
+        if (previousBlockHash == null)
+        {
+            throw new IllegalArgumentException("previous block hash can't be null");
+        }
+        this.previousBlockHash = previousBlockHash;
         timestamp = Instant.now().getEpochSecond();
         transactions = new Transaction[BLOCK_SIZE];
+        transactions[0] = new Transaction(sender,recipient,amount);
+        numberOfTransactions++;
+        hashTransactions(transactions);
+    }
+
+    Block(String recipient, int amount){
+        timestamp = Instant.now().getEpochSecond();
+        transactions = new Transaction[BLOCK_SIZE];
+        transactions[0] = new Transaction(recipient,amount);
+        numberOfTransactions++;
+        hashTransactions(transactions);
     }
 
     public boolean addTransaction(Transaction transaction){
