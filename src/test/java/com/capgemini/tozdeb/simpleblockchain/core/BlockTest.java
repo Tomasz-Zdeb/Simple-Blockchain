@@ -115,7 +115,7 @@ public class BlockTest {
     @Test
     public void testTransactionIsAddedProperlyWithPreviousBlockHash(){
         block = new Block(mockHash);
-        block.addTransaction(new RegularTransaction(mockUserA,mockUserB,mockValueA));
+        block.addTransaction(new Transaction(mockUserA,mockUserB,mockValueA));
         Transaction[] transactions = block.getTransactions();
 
         assertEquals(mockUserA, transactions[0].getSender());
@@ -131,7 +131,7 @@ public class BlockTest {
     @Test
     public void testTransactionIsAddedProperlyWithNullPreviousBlockHash(){
         block = new Block(null);
-        block.addTransaction(new RegularTransaction(mockUserA,mockUserB,mockValueA));
+        block.addTransaction(new Transaction(mockUserA,mockUserB,mockValueA));
         Transaction[] transactions = block.getTransactions();
 
         assertEquals(mockUserA, transactions[0].getSender());
@@ -150,9 +150,9 @@ public class BlockTest {
 
         final int expectedNumberOfTransactions = 3;
 
-        block.addTransaction(new RegularTransaction(mockUserA, mockUserB,mockValueB));
-        block.addTransaction(new RegularTransaction(mockUserB, mockUserC,mockValueC));
-        block.addTransaction(new RegularTransaction(mockUserA, mockUserD,mockValueD));
+        block.addTransaction(new Transaction(mockUserA, mockUserB,mockValueB));
+        block.addTransaction(new Transaction(mockUserB, mockUserC,mockValueC));
+        block.addTransaction(new Transaction(mockUserA, mockUserD,mockValueD));
         assertEquals(expectedNumberOfTransactions,block.getNumberOfTransactions());
     }
     @Test
@@ -161,7 +161,7 @@ public class BlockTest {
 
         final int expectedNumberOfTransactions = 1;
 
-        block.addTransaction(new RegularTransaction(mockUserA, mockUserB, mockValueB));
+        block.addTransaction(new Transaction(mockUserA, mockUserB, mockValueB));
         assertEquals(expectedNumberOfTransactions,block.getNumberOfTransactions());
     }
 
@@ -172,9 +172,9 @@ public class BlockTest {
 
         for (int i=0;i<block.transactions.length;i++)
         {
-            block.addTransaction(new RegularTransaction(mockUserA, mockUserB, mockValueB));
+            block.addTransaction(new Transaction(mockUserA, mockUserB, mockValueB));
         }
-        assertFalse(block.addTransaction(new RegularTransaction(mockUserA, mockUserB, mockValueB)));
+        assertFalse(block.addTransaction(new Transaction(mockUserA, mockUserB, mockValueB)));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -188,7 +188,7 @@ public class BlockTest {
     public void testIsTransactionsHashValid() {
         block = new Block(mockHash);
 
-        block.addTransaction(new RegularTransaction(mockUserA, mockUserB, mockValueB));
+        block.addTransaction(new Transaction(mockUserA, mockUserB, mockValueB));
         assertEquals(sha256HashLength,block.getTransactionsHash().length());
     }
 }

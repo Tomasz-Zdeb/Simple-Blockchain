@@ -71,7 +71,7 @@ public class GenesisBlockTest {
     @Test
     public void testTransactionIsAddedProperly(){
         block = new GenesisBlock(mockInitialUser,mockValueA);
-        assertTrue(block.addTransaction(new RegularTransaction(mockUserA,mockUserB,mockValueB)));
+        assertTrue(block.addTransaction(new Transaction(mockUserA,mockUserB,mockValueB)));
         Transaction[] transactions = block.getTransactions();
 
         assertNull(transactions[0].getSender());
@@ -93,9 +93,9 @@ public class GenesisBlockTest {
         final int expectedNumberOfTransactions = 4;
 
         block = new GenesisBlock(mockInitialUser,mockValueA);
-        block.addTransaction(new RegularTransaction(mockUserA, mockUserB,mockValueB));
-        block.addTransaction(new RegularTransaction(mockUserB, mockUserC,mockValueC));
-        block.addTransaction(new RegularTransaction(mockUserA, mockUserD,mockValueD));
+        block.addTransaction(new Transaction(mockUserA, mockUserB,mockValueB));
+        block.addTransaction(new Transaction(mockUserB, mockUserC,mockValueC));
+        block.addTransaction(new Transaction(mockUserA, mockUserD,mockValueD));
         assertEquals(expectedNumberOfTransactions,block.getNumberOfTransactions());
     }
     @Test
@@ -103,7 +103,7 @@ public class GenesisBlockTest {
         final int expectedNumberOfTransactions = 2;
 
         block = new GenesisBlock(mockInitialUser,mockValueA);
-        block.addTransaction(new RegularTransaction(mockUserA, mockUserB, mockValueB));
+        block.addTransaction(new Transaction(mockUserA, mockUserB, mockValueB));
         assertEquals(expectedNumberOfTransactions,block.getNumberOfTransactions());
     }
 
@@ -113,9 +113,9 @@ public class GenesisBlockTest {
         block = new GenesisBlock(mockInitialUser,mockValueA);
         for (int i=0;i<block.transactions.length-1;i++)
         {
-            block.addTransaction(new RegularTransaction(mockUserA, mockUserB, mockValueB));
+            block.addTransaction(new Transaction(mockUserA, mockUserB, mockValueB));
         }
-        assertFalse(block.addTransaction(new RegularTransaction(mockUserA, mockUserB, mockValueB)));
+        assertFalse(block.addTransaction(new Transaction(mockUserA, mockUserB, mockValueB)));
     }
 
     @Test(expected = IllegalArgumentException.class)
