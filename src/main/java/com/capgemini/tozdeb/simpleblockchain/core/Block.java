@@ -80,5 +80,17 @@ class Block {
         }
         transactionsHash = DigestUtils.sha256Hex(builder.toString());
     }
+
+    protected String generateBlockString()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append(timestamp);
+        if(previousBlockHash != null)
+        {
+            builder.append(previousBlockHash);
+        }
+        builder.append(transactionsHash);
+        return builder.toString();
+    }
 }
 

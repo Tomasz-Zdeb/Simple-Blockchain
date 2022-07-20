@@ -141,4 +141,10 @@ public class BlockTest {
 
         assertEquals(sha256HashLength,block.getTransactionsHash().length());
     }
+
+    @Test
+    public void testGetBlockString(){
+        block = new Block(mockHash,mockUserA,mockUserB,mockValueA);
+        assertEquals(block.getTimestamp()+block.previousBlockHash+block.transactionsHash,block.generateBlockString());
+    }
 }
