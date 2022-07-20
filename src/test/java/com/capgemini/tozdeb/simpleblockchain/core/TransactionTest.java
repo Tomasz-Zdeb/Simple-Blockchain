@@ -110,4 +110,10 @@ public class TransactionTest {
     public void testSenderEqualToRecipientThrows(){
         transaction = new Transaction(mockUserA,mockUserA,mockValueA);
     }
+
+    @Test
+    public void testGenerateTransactionString(){
+        transaction = new Transaction(mockUserA,mockUserB,mockValueA);
+        assertEquals(transaction.getTimestamp()+transaction.getSender()+transaction.getRecipient()+transaction.getAmount(),transaction.generateTransactionString());
+    }
 }
