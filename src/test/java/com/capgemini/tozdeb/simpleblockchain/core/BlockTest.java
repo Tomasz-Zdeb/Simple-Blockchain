@@ -20,7 +20,7 @@ public class BlockTest {
     @Test
     public void testConstructorNonGenesisDoesNotThrow() {
         try{
-            block = new Block(mockHash,mockUserA,mockUserB,mockValueA);
+            block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
         }
         catch(Exception e)
         {
@@ -41,19 +41,19 @@ public class BlockTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithNullPreviousHashTrows() {
-            block = new Block(null,mockUserA,mockUserB,mockValueA);
+            block = new Block(null,new Transaction(mockUserA,mockUserB,mockValueA));
     }
 
     @Test
     public void testGetPreviousHash(){
-        block = new Block(mockHash,mockUserA,mockUserB,mockValueA);
+        block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
         assertEquals(mockHash,block.getPreviousBlockHash());
     }
 
     @Test
     public void testGetTimestampNonGenesis() {
         long timestamp = Instant.now().getEpochSecond();
-        block = new Block(mockHash,mockUserA,mockUserB,mockValueA);
+        block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
         assertTrue(block.getTimestamp() >= timestamp);
         assertTrue(block.getTimestamp() < timestamp + maxTimestampTimeout);
     }
@@ -70,7 +70,7 @@ public class BlockTest {
     public void testNewBlocksNumberOfTransactionsIsOneNonGenesis() {
         final int expectedNumberOfTransactions = 1;
 
-        block = new Block(mockHash,mockUserA,mockUserB,mockValueA);
+        block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
         assertEquals(expectedNumberOfTransactions,block.getNumberOfTransactions());
     }
 
@@ -84,7 +84,7 @@ public class BlockTest {
 
     @Test
     public void testTransactionIsAddedProperlyWithPreviousBlockHash(){
-        block = new Block(mockHash,mockUserA,mockUserB,mockValueA);
+        block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
         Transaction[] transactions = block.getTransactions();
 
         assertEquals(mockUserA, transactions[0].getSender());
@@ -99,7 +99,7 @@ public class BlockTest {
 
     @Test
     public void testAddingThreeTransactionsIncrementsCounter(){
-        block = new Block(mockHash,mockUserA,mockUserB,mockValueA);
+        block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
         final int expectedNumberOfTransactions = 3;
 
         block.addTransaction(new Transaction(mockUserB, mockUserC,mockValueC));
@@ -108,7 +108,7 @@ public class BlockTest {
     }
     @Test
     public void testAddingOneTransactionsIncrementsCounter() {
-        block = new Block(mockHash,mockUserA,mockUserB,mockValueA);
+        block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
 
         final int expectedNumberOfTransactions = 2;
 
@@ -119,7 +119,7 @@ public class BlockTest {
     @Test
     public void testAddingATransactionToFullBlockReturnsFalse()
     {
-        block = new Block(mockHash,mockUserA,mockUserB,mockValueA);
+        block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
 
         for (int i=0;i<block.transactions.length-1;i++)
         {
@@ -131,20 +131,20 @@ public class BlockTest {
     @Test(expected = IllegalArgumentException.class)
     public void testAddingNullTransactionThrows()
     {
-        block = new Block(mockHash,mockUserA,mockUserB,mockValueA);
+        block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
         block.addTransaction(null);
     }
 
     @Test
     public void testIsTransactionsHashValid() {
-        block = new Block(mockHash,mockUserA,mockUserB,mockValueA);
+        block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
 
         assertEquals(sha256HashLength,block.getTransactionsHash().length());
     }
 
     @Test
     public void testGenerateBlockString(){
-        block = new Block(mockHash,mockUserA,mockUserB,mockValueA);
+        block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
         assertEquals(block.getTimestamp()+block.previousBlockHash+block.transactionsHash,block.generateBlockString());
     }
 }

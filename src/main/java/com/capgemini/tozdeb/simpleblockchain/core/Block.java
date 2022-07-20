@@ -29,7 +29,7 @@ class Block {
     protected byte numberOfTransactions = 0;
     protected Transaction[] transactions;
 
-    Block(String previousBlockHash,String sender, String recipient, int amount) {
+    Block(String previousBlockHash,Transaction transaction) {
         if (previousBlockHash == null)
         {
             throw new IllegalArgumentException("previous block hash can't be null");
@@ -37,7 +37,7 @@ class Block {
         this.previousBlockHash = previousBlockHash;
         timestamp = Instant.now().getEpochSecond();
         transactions = new Transaction[BLOCK_SIZE];
-        transactions[0] = new Transaction(sender,recipient,amount);
+        transactions[0] = transaction;
         numberOfTransactions++;
         hashTransactions(transactions);
     }
