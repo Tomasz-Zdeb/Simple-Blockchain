@@ -75,22 +75,10 @@ class Block {
         {
             if(transaction != null)
             {
-                builder.append(generateTransactionString(transaction));
+                builder.append(transaction.generateTransactionString());
             }
         }
         transactionsHash = DigestUtils.sha256Hex(builder.toString());
-    }
-    protected String generateTransactionString(Transaction transaction)
-    {
-        StringBuilder builder = new StringBuilder();
-        builder.append(transaction.getTimestamp());
-        if(transaction.getSender() != null)
-        {
-            builder.append(transaction.getSender());
-        }
-        builder.append(transaction.getRecipient());
-        builder.append(transaction.getAmount());
-        return builder.toString();
     }
 }
 

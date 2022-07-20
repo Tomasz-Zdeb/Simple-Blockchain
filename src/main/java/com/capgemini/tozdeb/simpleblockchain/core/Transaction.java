@@ -58,4 +58,16 @@ class Transaction {
         }
         this.amount = amount;
     }
+    protected String generateTransactionString()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append(timestamp);
+        if(sender != null)
+        {
+            builder.append(sender);
+        }
+        builder.append(recipient);
+        builder.append(amount);
+        return builder.toString();
+    }
 }
