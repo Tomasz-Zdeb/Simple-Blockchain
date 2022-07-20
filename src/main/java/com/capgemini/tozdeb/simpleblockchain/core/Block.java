@@ -23,7 +23,7 @@ class Block {
 
     public byte getNumberOfTransactions() { return numberOfTransactions;}
 
-    protected String previousBlockHash;
+    protected final String previousBlockHash;
     protected final long timestamp;
     protected String transactionsHash;
     protected byte numberOfTransactions = 0;
@@ -43,6 +43,7 @@ class Block {
     }
 
     Block(String recipient, int amount){
+        previousBlockHash = null;
         timestamp = Instant.now().getEpochSecond();
         transactions = new Transaction[BLOCK_SIZE];
         transactions[0] = new Transaction(recipient,amount);
