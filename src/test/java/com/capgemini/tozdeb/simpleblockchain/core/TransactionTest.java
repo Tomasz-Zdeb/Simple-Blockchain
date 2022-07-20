@@ -105,4 +105,9 @@ public class TransactionTest {
 
         transaction = new Transaction(mockUserB, mockIllegalAmount);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSenderEqualToRecipientThrows(){
+        transaction = new Transaction(mockUserA,mockUserA,mockValueA);
+    }
 }

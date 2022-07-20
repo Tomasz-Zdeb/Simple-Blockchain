@@ -41,6 +41,10 @@ class Transaction {
         {
             throw new IllegalArgumentException("transaction amount can't be negative or equal to zero");
         }
+        if(sender.equals(recipient))
+        {
+            throw new IllegalArgumentException("recipient must differ from sender");
+        }
         this.amount = amount;
     }
     Transaction(String recipient, int amount)
