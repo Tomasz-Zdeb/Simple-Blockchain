@@ -143,7 +143,7 @@ public class BlockTest {
     }
 
     @Test
-    public void testGetBlockString(){
+    public void testGenerateBlockString(){
         block = new Block(mockHash,mockUserA,mockUserB,mockValueA);
         assertEquals(block.getTimestamp()+block.previousBlockHash+block.transactionsHash,block.generateBlockString());
     }
