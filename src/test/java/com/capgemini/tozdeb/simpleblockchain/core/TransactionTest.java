@@ -9,6 +9,7 @@ public class TransactionTest {
             mockValueA = 1000;
     final String mockUserA = "userA",
             mockUserB = "userB";
+    final long mockTimestampA = 12345678;
     Transaction transaction;
 
     @Test
@@ -115,5 +116,24 @@ public class TransactionTest {
     public void testGenerateTransactionString(){
         transaction = new Transaction(mockUserA,mockUserB,mockValueA);
         assertEquals(transaction.getTimestamp()+transaction.getSender()+transaction.getRecipient()+transaction.getAmount(),transaction.generateTransactionString());
+    }
+
+    @Test
+    public void testValueOfSameReferences(){
+        transaction = new Transaction(mockUserA,mockUserB,mockValueA);
+    }
+
+    @Test
+    public void testValueOfSameValueDifferentReferences(){
+        transaction = new Transaction(mockTimestampA,mockUserA,mockUserB,mockValueA);
+
+        assertTrue(transaction.valueOf(new Transaction(mockTimestampA,mockUserA,mockUserB,mockValueA)));
+    }
+
+    @Test
+    public void TestValueOfDifferentValues(){
+        transaction = new Transaction(mockTimestampA,mockUserA,mockUserB,mockValueA);
+
+        assertFalse(transaction.valueOf(new Transaction(mockTimestampA,mockUserB,mockUserA,mockValueA)));
     }
 }
