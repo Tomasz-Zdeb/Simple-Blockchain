@@ -11,6 +11,7 @@ public class BlockTest {
             mockValueB=100,
             mockValueC = 10,
             mockValueD= 8;
+    final long mockTimestampA = 12345678;
     final String mockHash = "ABC-DEF-GHI",
     mockUserA = "userA",
     mockUserB = "userB",
@@ -20,7 +21,7 @@ public class BlockTest {
     @Test
     public void testConstructorNonGenesisDoesNotThrow() {
         try{
-            block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
+            block = new Block(mockTimestampA,mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
         }
         catch(Exception e)
         {
@@ -31,7 +32,7 @@ public class BlockTest {
     @Test
     public void testConstructorGenesisDoesNotThrow() {
         try{
-            block = new Block(mockUserB,mockValueA);
+            block = new Block(mockTimestampA,mockUserB,mockValueA);
         }
         catch(Exception e)
         {
@@ -46,16 +47,22 @@ public class BlockTest {
 
     @Test
     public void testGetPreviousHash(){
-        block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
+        block = new Block(mockTimestampA,mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
         assertEquals(mockHash,block.getPreviousBlockHash());
     }
 
     @Test
-    public void testGetTimestampNonGenesis() {
+    public void testGetTimestampNonGenesisGenerated() {
         long timestamp = Instant.now().getEpochSecond();
         block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
         assertTrue(block.getTimestamp() >= timestamp);
         assertTrue(block.getTimestamp() < timestamp + maxTimestampTimeout);
+    }
+
+    @Test
+    public void testGetTimestampNonGenesisPassedByConstructor() {
+        block = new Block(mockTimestampA,mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
+        assertEquals(mockTimestampA,block.getTimestamp());
     }
 
     @Test
@@ -145,6 +152,35 @@ public class BlockTest {
     @Test
     public void testGenerateBlockString(){
         block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
-        assertEquals(block.getTimestamp()+block.previousBlockHash+block.transactionsHash,block.generateBlockString());
+        assertEquals(block.getTimestamp()+block.previousBlockHash+block.transactionsHash,
+                block.generateBlockString());
+    }
+
+    @Test
+    public void testValueOfSameReferences(){
+        block = new Block(mockTimestampA,mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
+
+        assertTrue(block.valueOf(block));
+    }
+
+    @Test
+    public void testValueOfSameValueDifferentReferences(){
+        block = new Block(mockTimestampA,mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
+
+        assertTrue(block.valueOf(new Block(mockTimestampA,mockHash,new Transaction(mockUserA,mockUserB,mockValueA))));
+    }
+
+    @Test //TO DO
+    public void testValueOfSameValueDifferentReferencesGenesis(){
+        block = new Block(mockTimestampA,mockUserA,mockValueA);
+
+        assertTrue(block.valueOf(new Block(mockTimestampA,mockUserA,mockValueA)));
+    }
+
+    @Test
+    public void TestValueOfDifferentValues() {
+        block = new Block(mockTimestampA, mockUserA, mockValueA);
+
+        assertFalse(block.valueOf(new Block(mockTimestampA, mockHash, new Transaction(mockUserB, mockUserA, mockValueA))));
     }
 }
