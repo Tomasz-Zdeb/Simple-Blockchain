@@ -23,33 +23,42 @@ class Block {
 
     public byte getNumberOfTransactions() { return numberOfTransactions;}
 
-    protected final String previousBlockHash;
     protected final long timestamp;
+    protected final String previousBlockHash;
     protected String transactionsHash;
     protected byte numberOfTransactions = 0;
     protected Transaction[] transactions;
 
-    Block(String previousBlockHash,Transaction transaction) {
+    Block(long timestamp,String previousBlockHash,Transaction transaction) {
         if (previousBlockHash == null)
         {
             throw new IllegalArgumentException("previous block hash can't be null");
         }
         this.previousBlockHash = previousBlockHash;
-        timestamp = Instant.now().getEpochSecond();
-        transactions = new Transaction[BLOCK_SIZE];
-        transactions[0] = transaction;
-        numberOfTransactions++;
-        hashTransactions(transactions);
+        this.timestamp = timestamp;
+        this.transactions = new Transaction[BLOCK_SIZE];
+        this.transactions[0] = transaction;
+        this.numberOfTransactions++;
+        hashTransactions(this.transactions);
+    }
+    Block(String previousBlockHash,Transaction transaction)
+    {
+        this(Instant.now().getEpochSecond(),previousBlockHash,transaction);
     }
 
-    Block(String recipient, int amount){
-        previousBlockHash = null;
-        timestamp = Instant.now().getEpochSecond();
-        transactions = new Transaction[BLOCK_SIZE];
-        transactions[0] = new Transaction(recipient,amount);
-        numberOfTransactions++;
-        hashTransactions(transactions);
+    Block(long timestamp, String recipient, int amount){
+        this.timestamp = timestamp;
+        this.previousBlockHash = null;
+        this.transactions = new Transaction[BLOCK_SIZE];
+        this.transactions[0] = new Transaction(recipient,amount);
+        this.numberOfTransactions++;
+        hashTransactions(this.transactions);
     }
+    Block(String recipient, int amount)
+    {
+        this(Instant.now().getEpochSecond(),recipient,amount);
+    }
+
 
     public boolean addTransaction(Transaction transaction){
 
@@ -92,6 +101,24 @@ class Block {
         }
         builder.append(transactionsHash);
         return builder.toString();
+    }
+
+    public boolean valueOf(Block block) {
+        if (this.timestamp == block.timestamp && this.transactionsHash.equals(block.transactionsHash)) {
+            boolean transactionsAreEqual = true;
+            for (int i = 0; i < BLOCK_SIZE; i++) {
+                if(this.transactions[i] != null) {
+                    if (!this.transactions[i].valueOf(block.transactions[i])) {
+                        transactionsAreEqual = false;
+                    }
+                }
+            }
+            if (transactionsAreEqual && this.previousBlockHash == null && block.previousBlockHash == null) {
+                return true;
+            }
+            return transactionsAreEqual && this.previousBlockHash != null && block.previousBlockHash != null;
+        }
+        return false;
     }
 }
 
