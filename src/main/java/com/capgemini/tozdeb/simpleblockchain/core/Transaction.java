@@ -24,9 +24,9 @@ class Transaction {
     private final String recipient;
     private final int amount;
 
-    Transaction(String sender, String recipient, int amount)
+    Transaction(long timestamp, String sender, String recipient, int amount)
     {
-        this.timestamp = Instant.now().getEpochSecond();
+        this.timestamp = timestamp;
         if(sender == null || sender.isEmpty())
         {
             throw new IllegalArgumentException("sender can't be null or empty");
@@ -47,9 +47,13 @@ class Transaction {
         }
         this.amount = amount;
     }
-    Transaction(String recipient, int amount)
+    Transaction(String sender, String recipient, int amount)
     {
-        this.timestamp = Instant.now().getEpochSecond();
+        this(Instant.now().getEpochSecond(),sender,recipient,amount);
+    }
+    Transaction(long timestamp, String recipient, int amount)
+    {
+        this.timestamp = timestamp;
         this.sender = null;
         if(recipient == null || recipient.isEmpty())
         {
@@ -62,6 +66,9 @@ class Transaction {
         }
         this.amount = amount;
     }
+    Transaction(String recipient,int amount){
+        this(Instant.now().getEpochSecond(),recipient,amount);
+    }
     protected String generateTransactionString()
     {
         StringBuilder builder = new StringBuilder();
@@ -73,5 +80,17 @@ class Transaction {
         builder.append(recipient);
         builder.append(amount);
         return builder.toString();
+    }
+
+    public boolean valueOf(Transaction transaction) {
+        if (this.timestamp == transaction.timestamp &&
+                this.recipient.equals(transaction.recipient) &&
+                this.amount == transaction.amount) {
+            if(this.sender == null && transaction.sender == null){
+                return true;
+            }
+            return this.sender != null && transaction.sender != null && this.sender.equals(transaction.sender);
+        }
+        return false;
     }
 }
