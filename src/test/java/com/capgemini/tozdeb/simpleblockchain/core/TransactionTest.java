@@ -131,6 +131,13 @@ public class TransactionTest {
     }
 
     @Test
+    public void testValueOfSameValueDifferentReferencesGenesis(){
+        transaction = new Transaction(mockTimestampA,mockUserA,mockValueA);
+
+        assertTrue(transaction.valueOf(new Transaction(mockTimestampA,mockUserA,mockValueA)));
+    }
+
+    @Test
     public void TestValueOfDifferentValues(){
         transaction = new Transaction(mockTimestampA,mockUserA,mockUserB,mockValueA);
 
