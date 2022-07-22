@@ -45,6 +45,11 @@ public class BlockTest {
             block = new Block(null,new Transaction(mockUserA,mockUserB,mockValueA));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorWithGenesisTransactionPassedThrows(){
+        block = new Block(mockTimestampA,mockHash,new Transaction(mockTimestampA,mockUserA,mockValueA));
+    }
+
     @Test
     public void testGetPreviousHash(){
         block = new Block(mockTimestampA,mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
@@ -121,6 +126,12 @@ public class BlockTest {
 
         block.addTransaction(new Transaction(mockUserA, mockUserB, mockValueB));
         assertEquals(expectedNumberOfTransactions,block.getNumberOfTransactions());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddingGenesisTransactionThrows(){
+        block = new Block(mockHash,new Transaction(mockUserA,mockUserB,mockValueA));
+        block.addTransaction(new Transaction(mockTimestampA,mockUserA,mockValueA));
     }
 
     @Test
