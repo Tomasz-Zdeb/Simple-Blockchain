@@ -34,9 +34,13 @@ public class Block {
         {
             throw new IllegalArgumentException("previous block hash can't be null");
         }
-        if(transaction.getSender() == null)
+        if(transaction == null)
         {
-            throw new IllegalArgumentException("Non genesis block cannot be initialized with genesis transaction");
+            throw new IllegalArgumentException("Transaction cannot be null");
+        } else {
+            if (transaction.getSender() == null) {
+                throw new IllegalArgumentException("Non genesis block cannot be initialized with genesis transaction");
+            }
         }
         this.previousBlockHash = previousBlockHash;
         this.timestamp = timestamp;
