@@ -178,9 +178,15 @@ public class BlockTest {
     }
 
     @Test
-    public void TestValueOfDifferentValues() {
+    public void testValueOfDifferentValues() {
         block = new Block(mockTimestampA, mockUserA, mockValueA);
 
         assertFalse(block.valueOf(new Block(mockTimestampA, mockHash, new Transaction(mockUserB, mockUserA, mockValueA))));
+    }
+
+    @Test
+    public void testIsBlockHashValid(){
+        block = new Block(mockTimestampA, mockUserA, mockValueA);
+        assertEquals(sha256HashLength,block.hashBlock().length());
     }
 }
