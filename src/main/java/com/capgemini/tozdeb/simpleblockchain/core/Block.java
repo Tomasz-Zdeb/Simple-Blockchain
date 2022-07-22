@@ -34,6 +34,10 @@ public class Block {
         {
             throw new IllegalArgumentException("previous block hash can't be null");
         }
+        if(transaction.getSender() == null)
+        {
+            throw new IllegalArgumentException("Non genesis block cannot be initialized with genesis transaction");
+        }
         this.previousBlockHash = previousBlockHash;
         this.timestamp = timestamp;
         this.transactions = new Transaction[BLOCK_SIZE];
@@ -65,6 +69,10 @@ public class Block {
         if(transaction == null)
         {
             throw new IllegalArgumentException("transaction to be added must be of non null value");
+        }
+        if(transaction.getSender() == null)
+        {
+            throw new IllegalArgumentException("Genesis transaction can't be passed added to regular block");
         }
         if(numberOfTransactions < transactions.length)
         {
