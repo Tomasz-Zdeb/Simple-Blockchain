@@ -103,6 +103,11 @@ class Block {
         return builder.toString();
     }
 
+    public String hashBlock()
+    {
+        return DigestUtils.sha256Hex(generateBlockString());
+    }
+
     public boolean valueOf(Block block) {
         if (this.timestamp == block.timestamp && this.transactionsHash.equals(block.transactionsHash)) {
             boolean transactionsAreEqual = true;
