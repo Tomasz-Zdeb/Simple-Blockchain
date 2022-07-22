@@ -200,4 +200,14 @@ public class BlockTest {
         block = new Block(mockTimestampA, mockUserA, mockValueA);
         assertEquals(sha256HashLength,block.hashBlock().length());
     }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testPassingGenesisTransactionToNonGenesisConstructorThrows(){
+        block = new Block(mockTimestampA,mockHash,new Transaction(mockTimestampA,mockUserA,mockValueA));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testPassingNullTransactionToNonGenesisConstructorThrows(){
+        block = new Block(mockTimestampA,mockHash,null);
+    }
 }
