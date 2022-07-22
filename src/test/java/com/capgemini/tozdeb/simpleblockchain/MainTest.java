@@ -1,5 +1,6 @@
-package com.capgemini.tozdeb.simpleblockchain.core;
+package com.capgemini.tozdeb.simpleblockchain;
 
+import com.capgemini.tozdeb.simpleblockchain.Main;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

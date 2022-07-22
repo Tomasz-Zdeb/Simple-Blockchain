@@ -1,4 +1,4 @@
-package com.capgemini.tozdeb.simpleblockchain.core;
+package com.capgemini.tozdeb.simpleblockchain;
 
 public class Main {
     public static void main(String[] args) {
