@@ -2,7 +2,7 @@ package com.capgemini.tozdeb.simpleblockchain.core;
 
 import java.time.Instant;
 
-class Transaction {
+public class Transaction {
     public long getTimestamp() {
         return timestamp;
     }

@@ -3,7 +3,7 @@ package com.capgemini.tozdeb.simpleblockchain.core;
 import java.time.Instant;
 import org.apache.commons.codec.digest.DigestUtils;
 
-class Block {
+public class Block {
     final int BLOCK_SIZE = 10;
     public String getPreviousBlockHash() {
         return previousBlockHash;
