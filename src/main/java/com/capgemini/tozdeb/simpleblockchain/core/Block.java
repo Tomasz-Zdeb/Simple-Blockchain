@@ -110,18 +110,10 @@ class Block {
 
     public boolean valueOf(Block block) {
         if (this.timestamp == block.timestamp && this.transactionsHash.equals(block.transactionsHash)) {
-            boolean transactionsAreEqual = true;
-            for (int i = 0; i < BLOCK_SIZE; i++) {
-                if(this.transactions[i] != null) {
-                    if (!this.transactions[i].valueOf(block.transactions[i])) {
-                        transactionsAreEqual = false;
-                    }
-                }
-            }
-            if (transactionsAreEqual && this.previousBlockHash == null && block.previousBlockHash == null) {
+            if (this.previousBlockHash == null && block.previousBlockHash == null) {
                 return true;
             }
-            return transactionsAreEqual && this.previousBlockHash != null && block.previousBlockHash != null;
+            return this.previousBlockHash != null && block.previousBlockHash != null;
         }
         return false;
     }
