@@ -24,7 +24,7 @@ public class Transaction {
     private final String recipient;
     private final int amount;
 
-    Transaction(long timestamp, String sender, String recipient, int amount)
+    public Transaction(long timestamp, String sender, String recipient, int amount)
     {
         this.timestamp = timestamp;
         if(sender == null || sender.isEmpty())
@@ -47,11 +47,11 @@ public class Transaction {
         }
         this.amount = amount;
     }
-    Transaction(String sender, String recipient, int amount)
+    public Transaction(String sender, String recipient, int amount)
     {
         this(Instant.now().getEpochSecond(),sender,recipient,amount);
     }
-    Transaction(long timestamp, String recipient, int amount)
+    public Transaction(long timestamp, String recipient, int amount)
     {
         this.timestamp = timestamp;
         this.sender = null;
@@ -66,7 +66,7 @@ public class Transaction {
         }
         this.amount = amount;
     }
-    Transaction(String recipient,int amount){
+    public Transaction(String recipient,int amount){
         this(Instant.now().getEpochSecond(),recipient,amount);
     }
     protected String generateTransactionString()

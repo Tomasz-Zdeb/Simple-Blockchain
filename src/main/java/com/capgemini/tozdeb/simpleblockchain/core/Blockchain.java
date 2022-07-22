@@ -21,13 +21,13 @@ public class Blockchain {
         return blocks;
     }
 
-    Blockchain(Long timestamp, String ID, List<Block> blocks){
+    public Blockchain(Long timestamp, String ID, List<Block> blocks){
         this.timestamp = timestamp;
         this.ID = ID;
         this.blocks = blocks;
     }
 
-    Blockchain(String ID, String recipient, int amount){
+    public Blockchain(String ID, String recipient, int amount){
         this.timestamp = Instant.now().getEpochSecond();
         this.ID = ID;
         blocks.add(new Block(recipient,amount));
