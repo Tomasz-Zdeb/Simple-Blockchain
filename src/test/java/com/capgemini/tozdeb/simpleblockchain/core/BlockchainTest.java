@@ -28,6 +28,7 @@ public class BlockchainTest {
     public void initializeBlock()
     {
         blocks = new ArrayList<>();
+        blocks.add(new Block(mockTimestampA,mockUserA,mockValueA));
         blocks.add(new Block(mockTimestampA,
                 mockHash,
                 new Transaction(mockTimestampA,
@@ -76,10 +77,12 @@ public class BlockchainTest {
 
     @Test
     public void testGetBlocksNonGenesis(){
+        final int expectedSize = 2;
+
         blockchain = new Blockchain(mockTimestampA,mockID,blocks);
         List<Block> blocksReturned = blockchain.getBlocks();
         assertTrue(blocksReturned.size() == blocks.size() &&
-                blocksReturned.size() == 1);
+                blocksReturned.size() == expectedSize);
         assertTrue(blocksReturned.get(0).valueOf(blocks.get(0)));
     }
 
@@ -91,11 +94,53 @@ public class BlockchainTest {
         assertTrue(blockchain.getTimestamp() < expectedTimestamp + maxTimestampTimeout);
         assertEquals(mockID,blockchain.getID());
         assertEquals(1,blockchain.getBlocks().size());
+    }
 
+    @Test
+    public void testInitializeNewBlockchainDifferentValues(){
+        final long expectedTimestamp = Instant.now().getEpochSecond();
         blockchain = Blockchain.initializeNewBlockchain(mockIDB,mockUserB,mockValueB);
         assertTrue(blockchain.getTimestamp() >= expectedTimestamp);
         assertTrue(blockchain.getTimestamp() < expectedTimestamp + maxTimestampTimeout);
         assertEquals(mockIDB,blockchain.getID());
         assertEquals(1,blockchain.getBlocks().size());
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testInitializationWithBlocksThatContainMoreThanOneGenesisTransactionThrows(){
+        blocks = new ArrayList<>();
+        blocks.add(new Block(mockTimestampA,mockUserA,mockValueA));
+        blocks.add(new Block(mockTimestampA,mockUserA,mockValueA));
+
+        blockchain = new Blockchain(mockTimestampA,mockID,blocks);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testAddBlockNullBlockThrows(){
+        blockchain = Blockchain.initializeNewBlockchain(mockID,mockUserA,mockValueA);
+        blockchain.addBlock(null);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testAddBlockGenesisBlockThrows(){
+        Block block = new Block(mockTimestampA,mockUserA,mockValueA);
+        blockchain = Blockchain.initializeNewBlockchain(mockID,mockUserA,mockValueA);
+
+        blockchain.addBlock(block);
+    }
+
+    @Test
+    public void testAddBlockDoesNotThrow() {
+        Block block = new Block(mockTimestampA,
+                                mockHash,
+                                new Transaction(mockTimestampA,
+                                                mockUserA,
+                                                mockUserB,
+                                                mockValueA));
+        blockchain = Blockchain.initializeNewBlockchain(mockID,
+                                                        mockUserA,
+                                                        mockValueA);
+
+        blockchain.addBlock(block);
     }
 }
